@@ -1,0 +1,71 @@
+<%= form_for @book, :html => {:class => "form-horizontal book", :multipart => true  } do |f| %>
+
+    <% if @book.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @book.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+    <% end %>
+
+  <div class="control-group">
+    <%= f.label :title, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :title, :class => 'form-control' %>
+    </div>
+    <%= error_span(@book[:title]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :author, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :author, :class => 'form-control' %>
+    </div>
+    <%= error_span(@book[:author]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :ISBN, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :ISBN, :class => 'form-control' %>
+    </div>
+    <%= error_span(@book[:ISBN]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :category, :class => 'control-label' %>
+    <div class="controls">
+    <%=f.select :category, [['Adventure', "Adventure"], ['Computer science', "Computer science"], ['Romantic',"Romantic"], ['Thriller',"Thriller"], ['Horror', "Horror"]]%>
+      <!--<%= f.text_field :category, :class => 'form-control' %> -->
+    </div>
+    <%= error_span(@book[:category]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :price, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :price, :class => 'form-control' %>
+    </div>
+    <%= error_span(@book[:price]) %>
+  </div>
+  <br/>
+  
+  <div class="control-group">
+    <%= f.label :image, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.file_field :image, :class => 'form-control' %>
+    </div>
+    <%= error_span(@book[:price]) %>
+  </div>
+  <br/>
+  <br/>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            books_path, :class => 'btn btn-default' %>
+
+<% end %>

@@ -1,0 +1,51 @@
+
+
+<% if @order.empty? %>
+  <h3> You Didn't placed any orders </h3>
+  <% else %>
+    
+    <% if admin_signed_in?%>
+      <h3> All orders info</h3>
+      <% else%>
+  <h3> Your order History</h3>
+<% end%>
+  <hr/>
+  <% for order in @order.reverse %>
+  <h4> <font color="red">Order #<%=order.id%> </font></h4>
+<p><b>First Name  </b>:<%= order.fname %> </p>
+<p><b>Last Name  :</b><%= order.lname %> </p>
+<p><b>Address  </b>:<%= order.address %>
+<%= order.zipcode %>,
+<%= order.state %> </p>
+<table id="cart" class="table table-striped">
+  <tr>
+    <th>Product</th>
+    <th>Qty</th>
+    <th class="price">Unit Price</th>
+    <th class="price">Full Price</th>
+    
+  </tr>
+  
+  <% for line_item in order.line_items %>
+    <tr class="<%= cycle :odd, :even %>">
+    <td > <%= image_tag line_item.book.image.url, :size => "40x40" %>
+      <!--<%= link_to line_item.book.title, book_path(line_item.book)%></td> -->   
+       <%= line_item.book.title%></td>
+      <td class="qty"> <%= line_item.quantity%></td>
+      <td class="price"><%= number_to_currency(line_item.unit_price) %></td>
+      <td class="price"><%= number_to_currency(line_item.full_price) %></td>
+     </tr>
+     
+  <% end %>
+  <td>&nbsp</td>
+  <td> &nbsp</td>
+  <td> &nbsp</td>
+  <td class="total price" colspan="4">
+      Total: <%= number_to_currency order.total_price %>
+    </td>
+</table>
+<hr/>
+  <% end %>
+  <% end %>
+  
+

@@ -1,0 +1,48 @@
+
+<center><h3><font color='brown'>Shopping Cart</font></h3></center>
+
+<% if !@cart.line_items.empty?%>
+<table id="cart" class="table table-striped">
+  <tr>
+    <th>Product</th>
+    <th>Qty</th>
+    <th class="price">Unit Price</th>
+    <th class="price">Full Price</th>
+    <th class="Action">Action</th>
+  </tr>
+  
+  <% for line_item in @cart.line_items %>
+    <tr class="<%= cycle :odd, :even %>">
+    
+    <td > <%= image_tag line_item.book.image.url, :size => "70x70" %>
+      <%= link_to line_item.book.title, book_path(line_item.book)%></td>
+  
+      <td class="qty">
+	<%= button_to "^",lineitems_decrement_path(:book_id=>"#{line_item.book.id}"),:method => "post"%><%=line_item.quantity %>
+                         
+        <%= button_to "v",lineitems_path(:book_id=>"#{line_item.book.id}"),:method => "post"%>
+	
+      </td>
+      
+      <td class="price"><%= number_to_currency(line_item.unit_price) %></td>
+      <td class="price"><%= number_to_currency(line_item.full_price) %></td>
+   
+    <td class="Action"><%= form_tag(lineitems_delete_path, :method => "delete") do %>
+			  <%= hidden_field_tag(:book_id, line_item.book.id) %>
+			  <%= button_to("Delete") %>
+                        <% end %> </td>
+    </tr>
+  <% end %>
+  <tr>
+    <td class="total price" colspan="4">
+      Total: <%= number_to_currency @cart.total_price %>
+    </td>
+    <td><b><%= link_to "Empty the cart", :controller => "lineitems", :action => :destroy, :method => :delete %> </b> </td></tr>
+</table>
+
+<div align = "center"><b><%= link_to "Checkout", carts_checkout_path%></b></div>
+<div align = "right"><b><%=link_to "Continue Shopping >>",root_path%></b> </div>
+
+<% else %>
+  <h5> Your cart is emtpy</h5>
+<% end %>

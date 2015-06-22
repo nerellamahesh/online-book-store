@@ -1,0 +1,229 @@
+  <% if user_signed_in? %>
+  
+
+<style type="text/css">
+      
+.search{
+  width: 700px;
+  height: 40px;
+  font-size: large
+  
+}
+.select {
+  width: 80px;
+  height: 40px;
+  color: #D67d67;
+  font-size: large
+}
+.jumbotron {
+  margin-bottom: 10px;
+  margin-top: 1px;
+  height: 100px;
+  background:white;
+  margin-left: 150px;
+  margin-right: 100px;
+}
+.makeup {
+  font-size: medium;
+  font-style: italic;
+  color: #996633; 
+  background: white;
+  font-weight: bold;
+  
+}
+</style>
+</head>
+<body>
+  <div class="jumbotron">
+    <%= form_tag(books_search_path,:method => "get") do %>
+    <%= text_field_tag :search,params[:search],class:"search",placeholder:"search books by title or author"%>
+    <%= select_tag "search_from","<option>all</option><option>author</option><option>title</option>".html_safe, class: "select"%>
+    <%= submit_tag "Search", :name => nil, class: "select" %>
+  <%end%>
+
+ <!-- <%=link_to "Show by category",books_show_by_category_path%>
+  <!--  <p>      
+      <div class="makeup">
+      Categories :
+      <%= link_to "Adventure",books_category_path(:category=>"Adventure")%>
+      <%= link_to "Computer Science",books_category_path(:category=>"Computer science")%>
+      <%= link_to "Romantic",books_category_path(:category=>"Romantic")%>
+      <%= link_to "Thriller",books_category_path(:category=>"Thriller")%>
+      <%= link_to "Horror",books_category_path(:category=>"Horror")%> 
+      </div>
+     </p>-->	
+</div>
+  <hr/>
+</body>    
+    
+  <% model_class = Book %>
+  
+<table class="table table-striped">
+  <style type= "text/css">
+    
+    .title{
+      font-size:10pt;
+      font-weight: bold;
+      font-style: italic
+    }
+    .price{
+    color: #669999;
+    font-size: 10pt;
+    
+    }
+    
+  </style>
+  
+    <div class= "container">
+    <div class="row">
+    <% @books.each do |book| %>
+    
+        <div class="col-md-3">
+        <div><%=link_to image_tag(book.image.url,:size =>"150x200" ),book_path(book)%></div>
+        <div class= "title"><b><%= link_to book.title, book_path(book) %></b></div>
+        <div class ="price">Cost: <%= number_to_currency book.price, :unit => '$'%></div>
+	
+	<%if book.reviews.blank?%>
+	  <p> No ratings</p>
+	<%else%>
+	  <%book.reviews.average(:rating).to_i.times do %>
+	  <%= image_tag "start.jpg", :size =>"15x15"%>
+	<% end %>
+	
+	<% end %>
+	
+	<!--<span class ="category"> Category: </span><%=book.category%><br/><br/> -->
+        </div>
+      <% end %>
+    </div>
+</div>
+  
+  <% elsif admin_signed_in? %>
+    
+  <% model_class = Book %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      
+      <th><%= model_class.human_attribute_name(:title) %></th>
+      <th><%= model_class.human_attribute_name(:author) %></th>
+      <th><%= model_class.human_attribute_name(:ISBN) %></th>
+      <th><%= model_class.human_attribute_name(:price) %></th>
+      <th><%= model_class.human_attribute_name(:image) %></th>
+      <th><%= model_class.human_attribute_name(:Category) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <!--<td><%= link_to book.id, book_path(book) %></td>-->
+        <td><%= link_to book.title, book_path(book) %></td>
+        <td><%= book.author %></td>
+        <td><%= book.ISBN %></td>
+        <td><%= book.price %></td>
+        <td><%= image_tag book.image.url,:size =>"100x100"%></td>
+	<td><%=	book.category%></td>
+        <td><%=	l book.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_book_path(book), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      book_path(book),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_book_path,
+            :class => 'btn btn-primary' %>
+	    
+	    
+  
+<% else %>
+    <h1><font color="brown">Welcome back! </font></h1>
+    <p class="lead">
+      You must sign in or sign up before you can access our book store.
+    </p>
+    
+    <div class="row-fluid">
+        <%= link_to "Sign In", new_user_session_path, :class => "btn btn-success" %>
+        <%= link_to "Register", new_user_registration_path, :class => "btn btn-success" %>
+	</font>
+    </div>
+    
+<style type="text/css">
+
+.item{
+    background: #333;    
+    text-align: center;
+    height: 450px !important;
+}
+.carousel{
+    margin-top: 20px;
+}
+.bs-example{
+	margin: 0px;
+}
+</style>
+</head>
+<body>
+<div class="bs-example">
+    <div id="myCarousel" class="carousel slide" data-interval="3000" data-ride="carousel">
+    	<!-- Carousel indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>   
+       <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="active item">
+                <%= image_tag "book1.jpg"%>
+              
+                <div class="carousel-caption">
+                  
+		  <h1>YOU CAN'T BUY HAPPINESS BUT YOU CAN BOOKS </br>
+		  AND THAT'S KIND OF SAME THING</h1>
+	      <div class="row-fluid">
+        <%= link_to "Sign In", new_user_session_path, :class => "btn btn-success" %>
+	      </div>
+	      </div>
+            </div>
+            <div class="item">
+                <%= image_tag "book2.jpg"%>
+                <div class="carousel-caption">
+		  <h1>READING BOOKS MAKE YOU BETTER</h1>
+		  <div class="row-fluid">
+        <%= link_to "Sign In", new_user_session_path, :class => "btn btn-success" %>
+	      </div>
+                </div>
+            </div>
+            <div class="item">
+                <%= image_tag "book3.jpg"%>
+                <div class="carousel-caption">
+		  <h1> MILLIONS OF BOOKS WITH GREAT DISCOUNTS</h1>
+		  <div class="row-fluid">
+        <%= link_to "Sign In", new_user_session_path, :class => "btn btn-success" %>
+	      </div>
+                </div>
+            </div>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+    </div>
+</div>
+</body>
+<%end%>
+  

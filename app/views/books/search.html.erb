@@ -1,0 +1,38 @@
+<p><font color=#993333 size=5px> Search Results</font><hr/>
+<table class="table table-striped">
+  <style type= "text/css">
+    
+    .title{
+      font-size:10pt;
+      font-weight: bold;
+    }
+    .price{
+    color: black;
+    font-size: 10pt;
+    }
+    
+    .category {
+      color: brown;
+      font-size: 10pt;
+    }
+    
+  </style>
+  
+    <div class= "container">
+    <div class="row">
+    <% @books.each do |book| %>
+        <div class="col-md-4">
+        
+        <div><%=link_to image_tag(book.image.url,:size =>"150x200" ),book_path(book)%></div>
+        <div class= "title"><b><%= link_to book.title, book_path(book) %></b></div>
+        <div><b>Author:<%=book.author%></b></div>
+        
+        <div class ="price"><%= number_to_currency book.price, :unit => '$'%></div>
+	<span class ="category"> Category: </span><%=book.category%><br/><br/>
+        
+        </div>
+      
+      <% end %>
+      
+    </div>
+</div>

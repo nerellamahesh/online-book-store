@@ -1,0 +1,31 @@
+
+<% if !admin_signed_in?%>
+<h3> <font color="green"> Your Profile</font></h3>
+<% else%>
+  <h3> <font color="green"> <%=@user.username%> Profile</font></h3>
+<hr/>
+<% end%>
+<hr/>
+ <div align="left"> 
+<p>
+<strong> User Name: </strong> <%=@user.username%> <br/> <br/>
+<strong> First Name: </strong> <%=@user.firstname%> <br/> <br/>
+<strong> Last Name : </strong> <%=@user.lastname%> <br/><br/>
+<strong> Date of Birth : </strong> <%=@user.dob%> <br/><br/>
+<strong> Email : </strong> <%=@user.email%> <br/><br/>
+<strong> Phone : </strong> <%=@user.phone%> <br/><br/>
+<% if user_signed_in?%>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_user_path(:id=>current_user.id), :class => 'btn btn-danger btn-xs' %>
+              
+</div>
+<% end %>
+<% if !user_signed_in?%>
+  <strong> User_ID : </strong> <%=@user.id%> <br/><br/>
+  <strong> Sign in count : </strong> <%=@user.sign_in_count%> <br/><br/>
+<strong> Signed in at : </strong> <%=@user.current_sign_in_at%> <br/><br/>
+<strong> Last Signed in : </strong> <%=@user.last_sign_in_at%> <br/><br/>
+<%end%>
+</p>
+<br/>
+<br/>
