@@ -13,7 +13,9 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :firstname, :lastname, :dob,:email,:phone, :password, :password_confirmation, :current_password) }
   end
   
-  def current_cart  
+  ## Github Check-in Test
+  
+  def current_cart
     #cookies.signed[:user_id]= current_user.id
     #@current_cart ||= Cart.find(cookies.signed[:user_id])
     
