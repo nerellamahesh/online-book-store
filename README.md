@@ -24,14 +24,13 @@ Things you may want to cover:
 * ...
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+## Docker
 
-HOW TO SETUP:
+Create the Docker image and run it locally
 
-
+```bash
+dockerImage=angular-cosmosdb
+docker build -t $dockerImage .
+docker run -d -p 3000:80 $dockerImage
 ```
 
-Test
-
-```
